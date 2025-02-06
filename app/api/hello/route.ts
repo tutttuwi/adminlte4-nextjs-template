@@ -6,7 +6,7 @@ import zlib from 'zlib';
 
 const SECRET_KEY = process.env.API_SECRET_KEY || 'default_secret';
 
-export async function GET(request: NextRequest): Promise<NextResponse<Object>> {
+export async function GET(request: NextRequest) {
   // クッキーアクセス
   const cookieStore = await cookies();
   const a = cookieStore.get('a');
@@ -14,27 +14,27 @@ export async function GET(request: NextRequest): Promise<NextResponse<Object>> {
   const c = cookieStore.delete('c');
 
   // ユーザーエージェント解析
-  const userAgent = request.headers.get('User-Agent');
+  // const userAgent = request.headers.get('User-Agent');
   // 認証コード取得
-  const authCode = request.headers.get('Authorization');
+  // const authCode = request.headers.get('Authorization');
 
   // リクエスト情報読み込み
-  request.json(); // JSONボディを解析
-  request.text(); // プレーンテキスト取得
-  request.formData(); // フォームデータ取得
+  // request.json(); // JSONボディを解析
+  // request.text(); // プレーンテキスト取得
+  // request.formData(); // フォームデータ取得
   // クエリパラメータ取得
-  const queryParam = new URL(request.url).searchParams.get('key');
+  // const queryParam = new URL(request.url).searchParams.get('key');
 
   // リクエストの IP アドレス取得(未実装)
 
   // コンテンツタイプチェック
-  request.headers.get('Content-Type') === 'application/json';
+  // request.headers.get('Content-Type') === 'application/json';
 
   // 環境変数読み込み
-  process.env.API_SECRET_KEY;
+  // process.env.API_SECRET_KEY;
 
   // サーバー時間の取得
-  const now = new Date().toISOString();
+  // const now = new Date().toISOString();
 
   // リダイレクト処理
   // NextResponse.redirect('https://example.com');
@@ -48,25 +48,25 @@ export async function GET(request: NextRequest): Promise<NextResponse<Object>> {
   return NextResponse.json({
     message: 'GET request processed',
     cookies: { a, b, c },
-    userAgent,
-    timestamp: now,
-    queryParam,
+    // userAgent,
+    // timestamp: now,
+    // queryParam,
   });
 }
 
-export async function HEAD(request: Request): Promise<Response> {
+export async function HEAD(request: Request) {
   return new Response(null, { status: 200 });
 }
 
-export async function POST(request: Request): Promise<NextResponse<Object>> {
+export async function POST(request: Request) {
   try {
     // 6. JSON Web Token (JWT) の発行
     const data = await request.json();
     const token = jwt.sign({ data }, SECRET_KEY);
 
     // ファイルのアップロードデータ取得
-    const formData = await request.formData();
-    const file = formData.get('file');
+    // const formData = await request.formData();
+    // const file = formData.get('file');
 
     // 外部API呼び出し
     // const response = await fetch('https://api.example.com/data'); const json = await response.json();
@@ -77,7 +77,7 @@ export async function POST(request: Request): Promise<NextResponse<Object>> {
   }
 }
 
-export async function PUT(request: Request): Promise<NextResponse<Object>> {
+export async function PUT(request: Request) {
   try {
     // 7. データ更新処理
     const data = await request.json();
@@ -87,11 +87,11 @@ export async function PUT(request: Request): Promise<NextResponse<Object>> {
   }
 }
 
-export async function DELETE(request: Request): Promise<NextResponse<Object>> {
+export async function DELETE(request: Request) {
   return NextResponse.json({ message: 'DELETE request processed, resource deleted' }, { status: 204 });
 }
 
-export async function PATCH(request: Request): Promise<NextResponse<Object>> {
+export async function PATCH(request: Request) {
   try {
     // 8. データの部分更新
     const data = await request.json();
@@ -101,23 +101,23 @@ export async function PATCH(request: Request): Promise<NextResponse<Object>> {
   }
 }
 
-export async function OPTIONS(request: Request): Promise<Response> {
+export async function OPTIONS(request: Request) {
   return new Response(null, { status: 204, headers: { Allow: 'GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS' } });
 }
 
-export async function generateUUID(): Promise<NextResponse<Object>> {
+async function generateUUID() {
   // 9. UUID の生成
   return NextResponse.json({ uuid: uuidv4() });
 }
 
-export async function gzipResponse(request: Request): Promise<Response> {
+async function gzipResponse(request: Request) {
   // 10. レスポンスの gzip 圧縮
   const data = JSON.stringify({ message: 'Compressed response' });
   const compressed = zlib.gzipSync(data);
   return new Response(compressed, { headers: { 'Content-Encoding': 'gzip', 'Content-Type': 'application/json' } });
 }
 
-export async function rateLimitCheck(request: NextRequest): Promise<NextResponse<Object>> {
+async function rateLimitCheck(request: NextRequest) {
   // 11. API レート制限（Rate Limiting）
   // const ip = request.headers.get('x-forwarded-for') || request.socket.remoteAddress;
   const requestCount = 0; // Simulated rate limit count check
