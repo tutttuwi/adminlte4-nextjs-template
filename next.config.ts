@@ -13,10 +13,10 @@ const nextConfig: NextConfig = {
   },
 
   // 外部サーバからのアセット取得: https://nextjs.org/docs/app/api-reference/config/next-config-js/images
-  images: {
-    loader: 'akamai',
-    loaderFile: './hoge/image/akamaiLoader.js',
-  },
+  // images: {
+  //   loader: 'akamai',
+  //   loaderFile: './hoge/image/akamaiLoader.js',
+  // },
 
   // ウェブパック設定
   // webpack: config => {
